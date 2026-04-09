@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SAT Math Prep — Монгол</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Nunito:wght@400;500;600;700;800&family=Noto+Sans+Mongolian&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            display: ['Playfair Display', 'serif'],
+            body: ['Nunito', 'sans-serif'],
+          },
+          colors: {
+            parchment: '#F5F0E8',
+            teal: { 700: '#0D6E6E', 800: '#0A5555', 900: '#073D3D' },
+            amber: { 400: '#FBBF24', 500: '#F59E0B', 600: '#D97706' },
+            slate: { 800: '#1E293B', 900: '#0F172A' },
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    * { font-family: 'Nunito', sans-serif; box-sizing: border-box; }
+    .font-display { font-family: 'Playfair Display', serif; }
+    body { background: #F5F0E8; margin: 0; }
+
+    /* Mongolian knot pattern background */
+    .pattern-bg {
+      background-image: 
+        radial-gradient(circle at 25% 25%, rgba(13,110,110,0.08) 0%, transparent 50%),
+        radial-gradient(circle at 75% 75%, rgba(245,158,11,0.06) 0%, transparent 50%),
+        url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%230D6E6E' fill-opacity='0.05'%3E%3Cpath d='M30 0 L60 30 L30 60 L0 30 Z M30 10 L50 30 L30 50 L10 30 Z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+    
+    .hero-pattern {
+      background: linear-gradient(135deg, #073D3D 0%, #0D6E6E 50%, #0A5555 100%);
+    }
+
+    /* Animated button */
+    .btn-primary {
+      background: linear-gradient(135deg, #F59E0B, #D97706);
+      color: white;
+      font-weight: 800;
+      padding: 14px 32px;
+      border-radius: 12px;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 15px rgba(245,158,11,0.4);
+      font-family: 'Nunito', sans-serif;
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(245,158,11,0.5); }
+    .btn-primary:active { transform: translateY(0); }
+
+    .btn-secondary {
+      background: white;
+      color: #0D6E6E;
+      font-weight: 700;
+      padding: 10px 22px;
+      border-radius: 10px;
+      border: 2px solid #0D6E6E;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: all 0.2s ease;
+      font-family: 'Nunito', sans-serif;
+    }
+    .btn-secondary:hover { background: #0D6E6E; color: white; }
+
+    /* Card styles */
+    .card {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+      border: 1px solid rgba(13,110,110,0.1);
+    }
+    
+    .card-accent {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+      border-left: 4px solid #0D6E6E;
+    }
+
+    /* Option buttons */
+    .option-btn {
+      width: 100%;
+      text-align: left;
+      padding: 14px 18px;
+      border-radius: 12px;
+      border: 2px solid #E5E7EB;
+      background: white;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #1E293B;
+    }
+    .option-btn:hover:not(:disabled) { border-color: #0D6E6E; background: rgba(13,110,110,0.04); transform: translateX(4px); }
+    .option-btn.correct { border-color: #10B981; background: rgba(16,185,129,0.1); color: #065F46; }
+    .option-btn.incorrect { border-color: #EF4444; background: rgba(239,68,68,0.1); color: #7F1D1D; }
+    .option-btn.revealed-correct { border-color: #10B981; background: rgba(16,185,129,0.08); }
+    .option-btn:disabled { cursor: default; }
+
+    /* Nav */
+    .navbar {
+      background: rgba(7,61,61,0.97);
+      backdrop-filter: blur(10px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    
+    .nav-link {
+      color: rgba(255,255,255,0.75);
+      font-weight: 600;
+      padding: 8px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-size: 0.9rem;
+    }
+    .nav-link:hover, .nav-link.active { color: white; background: rgba(255,255,255,0.12); }
+
+    /* Topic chips */
+    .topic-chip {
+      padding: 8px 16px;
+      border-radius: 20px;
+      border: 2px solid #E5E7EB;
+      background: white;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 0.8rem;
+      transition: all 0.2s;
+      font-family: 'Nunito', sans-serif;
+      color: #374151;
+    }
+    .topic-chip:hover { border-color: #0D6E6E; color: #0D6E6E; }
+    .topic-chip.active { background: #0D6E6E; border-color: #0D6E6E; color: white; box-shadow: 0 2px 8px rgba(13,110,110,0.3); }
+
+    /* Difficulty badge */
+    .diff-easy { background: #D1FAE5; color: #065F46; }
+    .diff-medium { background: #FEF3C7; color: #92400E; }
+    .diff-hard { background: #FEE2E2; color: #7F1D1D; }
+    .diff-badge { padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; }
+
+    /* Stats card */
+    .stat-card { 
+      background: linear-gradient(135deg, #0D6E6E, #073D3D);
+      color: white; border-radius: 14px; padding: 20px; text-align: center;
+    }
+
+    /* Loading spinner */
+    .spinner {
+      width: 40px; height: 40px;
+      border: 3px solid rgba(13,110,110,0.2);
+      border-top-color: #0D6E6E;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin: 0 auto;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Explanation box */
+    .explanation-box {
+      background: linear-gradient(135deg, rgba(13,110,110,0.05), rgba(245,158,11,0.05));
+      border: 1px solid rgba(13,110,110,0.2);
+      border-radius: 14px;
+      padding: 20px;
+      margin-top: 16px;
+    }
+
+    /* Vocab card */
+    .vocab-card {
+      background: white;
+      border-radius: 12px;
+      padding: 14px 16px;
+      border-left: 3px solid #F59E0B;
+      box-shadow: 0 1px 8px rgba(0,0,0,0.06);
+    }
+
+    /* Score estimator */
+    .score-ring {
+      width: 90px; height: 90px;
+      border-radius: 50%;
+      background: conic-gradient(#0D6E6E var(--pct), #E5E7EB var(--pct));
+      display: flex; align-items: center; justify-content: center;
+      position: relative;
+    }
+    .score-ring-inner {
+      width: 70px; height: 70px;
+      background: white; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    /* Page transitions */
+    .page-enter { animation: fadeSlideIn 0.4s ease forwards; }
+    @keyframes fadeSlideIn { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* Feature card hover */
+    .feature-card {
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 16px;
+      padding: 28px;
+      transition: all 0.3s ease;
+      cursor: default;
+    }
+    .feature-card:hover { background: rgba(255,255,255,0.18); transform: translateY(-4px); }
+
+    /* Streak fire */
+    .streak-badge {
+      background: linear-gradient(135deg, #FF6B35, #FF4500);
+      color: white; padding: 4px 12px; border-radius: 20px;
+      font-weight: 800; font-size: 0.8rem;
+      box-shadow: 0 2px 8px rgba(255,69,0,0.4);
+    }
+
+    /* Section divider */
+    .section-divider {
+      display: flex; align-items: center; gap: 12px; margin: 24px 0;
+    }
+    .section-divider hr { flex: 1; border: none; border-top: 1px solid #E5E7EB; }
+
+    /* Recharts override */
+    .recharts-tooltip-wrapper { font-family: 'Nunito', sans-serif !important; }
+
+    /* KaTeX rendered math */
+    .katex { font-size: 1.05em; }
+
+    /* Animated gradient text */
+    .gradient-text {
+      background: linear-gradient(135deg, #FBBF24, #F59E0B, #D97706);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* Sidebar scroll */
+    .vocab-scroll { max-height: 400px; overflow-y: auto; }
+    .vocab-scroll::-webkit-scrollbar { width: 4px; }
+    .vocab-scroll::-webkit-scrollbar-track { background: #F3F4F6; border-radius: 4px; }
+    .vocab-scroll::-webkit-scrollbar-thumb { background: #0D6E6E; border-radius: 4px; }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .dashboard-grid { grid-template-columns: 1fr !important; }
+      .hero-text { font-size: 2.5rem !important; }
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="module">
+    // ===== IMPORTS (via CDN ESM) =====
+    import React, { useState, useEffect, useCallback, useRef } from 'https://esm.sh/react@18';
+    import { createRoot } from 'https://esm.sh/react-dom@18/client';
+    import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from 'https://esm.sh/recharts@2';
+
+    // ===== CONSTANTS =====
+    const TOPICS = [
+      { id: 'algebra', label: 'Heart of Algebra', mn: 'Алгебрын үндэс', icon: '📐', color: '#0D6E6E' },
+      { id: 'data', label: 'Problem Solving & Data', mn: 'Өгөгдөл шинжилгээ', icon: '📊', color: '#7C3AED' },
+      { id: 'advanced', label: 'Passport to Advanced Math', mn: 'Дэвшилтэт математик', icon: '🚀', color: '#DC2626' },
+      { id: 'geometry', label: 'Geometry & Trig', mn: 'Геометр & Тригонометр', icon: '📏', color: '#D97706' },
+    ];
+
+    const DIFFICULTY_LABELS = { easy: 'Хялбар', medium: 'Дунд', hard: 'Хэцүү' };
+
+    // ===== MATH RENDERER =====
+    function MathText({ text }) {
+      const ref = useRef(null);
+      useEffect(() => {
+        if (ref.current && window.renderMathInElement) {
+          renderMathInElement(ref.current, {
+            delimiters: [
+              { left: '$$', right: '$$', display: true },
+              { left: '$', right: '$', display: false },
+            ],
+            throwOnError: false,
+          });
+        }
+      }, [text]);
+      return React.createElement('span', { ref, dangerouslySetInnerHTML: { __html: text } });
+    }
+
+    // ===== NAVBAR =====
+    function Navbar({ page, setPage }) {
+      return React.createElement('nav', { className: 'navbar' },
+        React.createElement('div', { className: 'max-w-6xl mx-auto px-4 py-3 flex items-center justify-between' },
+          React.createElement('div', { className: 'flex items-center gap-3', onClick: () => setPage('landing'), style: { cursor: 'pointer' } },
+            React.createElement('div', { style: { fontSize: '1.5rem' } }, '🧮'),
+            React.createElement('div', null,
+              React.createElement('div', { className: 'font-display text-white font-bold', style: { fontSize: '1.1rem', lineHeight: 1.1 } }, 'SAT Math Prep'),
+              React.createElement('div', { style: { color: 'rgba(255,255,255,0.55)', fontSize: '0.7rem', fontWeight: 600, letterSpacing: '0.05em' } }, 'МОНГОЛООР СУРАЛЦАНА')
+            )
+          ),
+          React.createElement('div', { className: 'flex gap-2' },
+            React.createElement('button', { className: `nav-link ${page === 'landing' ? 'active' : ''}`, onClick: () => setPage('landing') }, '🏠 Нүүр'),
+            React.createElement('button', { className: `nav-link ${page === 'dashboard' ? 'active' : ''}`, onClick: () => setPage('dashboard') }, '📚 Дасгал')
+          )
+        )
+      );
+    }
+
+    // ===== LANDING PAGE =====
+    function LandingPage({ setPage }) {
+      const features = [
+        { icon: '🇲🇳', title: 'Bilingual Support', titleMn: 'Хоёр хэлтэй', desc: 'Every question in English AND Mongolian — so you always understand', descMn: 'Асуулт бүр Монгол хэлээр — ойлгохгүй зүйл байхгүй!' },
+        { icon: '🎯', title: 'Adaptive Difficulty', titleMn: 'Тохирсон хүндрэл', desc: 'Gets harder as you improve, easier if you struggle', descMn: 'Чадварт тааруулан автоматаар тохируулагдана' },
+        { icon: '📖', title: 'Vocabulary Builder', titleMn: 'Үгийн сан', desc: 'Learn key math terms in both languages as you practice', descMn: 'Дасгал хийхийн хажуугаар математикийн нэр томьёог сур' },
+      ];
+
+      return React.createElement('div', { className: 'page-enter' },
+        // Hero
+        React.createElement('div', { className: 'hero-pattern', style: { minHeight: '85vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '60px 20px', position: 'relative', overflow: 'hidden' } },
+          // Decorative circles
+          React.createElement('div', { style: { position: 'absolute', top: '-100px', right: '-100px', width: '400px', height: '400px', borderRadius: '50%', background: 'rgba(245,158,11,0.08)', border: '1px solid rgba(245,158,11,0.15)' } }),
+          React.createElement('div', { style: { position: 'absolute', bottom: '-80px', left: '-80px', width: '300px', height: '300px', borderRadius: '50%', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)' } }),
+
+          React.createElement('div', { className: 'max-w-4xl mx-auto text-center', style: { position: 'relative', zIndex: 1 } },
+            React.createElement('div', { style: { display: 'inline-block', background: 'rgba(245,158,11,0.2)', border: '1px solid rgba(245,158,11,0.4)', borderRadius: '20px', padding: '6px 18px', marginBottom: '24px' } },
+              React.createElement('span', { style: { color: '#FBBF24', fontWeight: 700, fontSize: '0.85rem', letterSpacing: '0.08em' } }, '🎓 10-Р АНГИ • SAT SCORE 600+')
+            ),
+            React.createElement('h1', { className: 'font-display hero-text', style: { fontSize: '3.8rem', color: 'white', lineHeight: 1.1, marginBottom: '16px', fontWeight: 900 } },
+              'SAT Math ', React.createElement('span', { className: 'gradient-text' }, 'Монголоор'), React.createElement('br'), 'Суралц!'
+            ),
+            React.createElement('p', { style: { color: 'rgba(255,255,255,0.75)', fontSize: '1.1rem', maxWidth: '600px', margin: '0 auto 16px', lineHeight: 1.7 } },
+              'AI-powered practice with bilingual explanations. Built for Mongolian students aiming for 600+ on the SAT Math section.'
+            ),
+            React.createElement('p', { style: { color: 'rgba(255,255,255,0.5)', fontSize: '0.95rem', maxWidth: '550px', margin: '0 auto 40px', lineHeight: 1.6 } },
+              'Монгол оюутнуудад зориулсан, AI-ийн тусламжтай, хоёр хэлтэй тайлбартай SAT математикийн дасгал.'
+            ),
+            React.createElement('button', { className: 'btn-primary', style: { fontSize: '1.1rem', padding: '16px 48px' }, onClick: () => setPage('dashboard') },
+              '📚 Дасгал эхлэх — Start Practice →'
+            ),
+            // Stats row
+            React.createElement('div', { style: { display: 'flex', gap: '40px', justifyContent: 'center', marginTop: '56px', flexWrap: 'wrap' } },
+              [['4', 'Topics / Сэдэв'], ['3', 'Difficulty Levels'], ['∞', 'AI Questions']].map(([n, l]) =>
+                React.createElement('div', { key: l, style: { textAlign: 'center' } },
+                  React.createElement('div', { className: 'font-display gradient-text', style: { fontSize: '2.5rem', fontWeight: 900 } }, n),
+                  React.createElement('div', { style: { color: 'rgba(255,255,255,0.55)', fontSize: '0.8rem', fontWeight: 600, marginTop: '2px' } }, l)
+                )
+              )
+            )
+          )
+        ),
+
+        // Features
+        React.createElement('div', { className: 'hero-pattern', style: { background: 'rgba(7,61,61,0.97)', padding: '60px 20px' } },
+          React.createElement('div', { className: 'max-w-5xl mx-auto' },
+            React.createElement('h2', { className: 'font-display text-white text-center', style: { fontSize: '2rem', marginBottom: '12px' } }, 'Why This App Works'),
+            React.createElement('p', { style: { color: 'rgba(255,255,255,0.5)', textAlign: 'center', marginBottom: '40px' } }, 'Энэ апп яагаад ажилладаг вэ?'),
+            React.createElement('div', { style: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '20px' } },
+              features.map(f =>
+                React.createElement('div', { key: f.title, className: 'feature-card' },
+                  React.createElement('div', { style: { fontSize: '2.5rem', marginBottom: '16px' } }, f.icon),
+                  React.createElement('div', { style: { color: '#FBBF24', fontWeight: 800, fontSize: '1rem', marginBottom: '4px' } }, f.title),
+                  React.createElement('div', { style: { color: 'rgba(255,255,255,0.4)', fontSize: '0.8rem', marginBottom: '12px' } }, f.titleMn),
+                  React.createElement('div', { style: { color: 'rgba(255,255,255,0.8)', fontSize: '0.9rem', lineHeight: 1.6 } }, f.desc),
+                  React.createElement('div', { style: { color: 'rgba(255,255,255,0.4)', fontSize: '0.85rem', marginTop: '6px', lineHeight: 1.5, fontStyle: 'italic' } }, f.descMn)
+                )
+              )
+            )
+          )
+        ),
+
+        // CTA
+        React.createElement('div', { className: 'pattern-bg', style: { padding: '80px 20px', textAlign: 'center' } },
+          React.createElement('h2', { className: 'font-display', style: { fontSize: '2.2rem', color: '#073D3D', marginBottom: '12px' } }, 'Ready to hit 600?'),
+          React.createElement('p', { style: { color: '#6B7280', marginBottom: '32px', fontSize: '1rem' } }, '600 оноо авахад бэлэн үү? Яг одоо эхэл!'),
+          React.createElement('button', { className: 'btn-primary', style: { fontSize: '1.05rem' }, onClick: () => setPage('dashboard') }, '🚀 Эхлэх — Get Started')
+        )
+      );
+    }
+
+    // ===== PERFORMANCE CHART =====
+    function PerformanceChart({ topicStats }) {
+      const data = TOPICS.map(t => ({
+        name: t.icon + ' ' + t.id.charAt(0).toUpperCase() + t.id.slice(1),
+        accuracy: topicStats[t.id] ? Math.round((topicStats[t.id].correct / topicStats[t.id].total) * 100) : 0,
+        total: topicStats[t.id]?.total || 0,
+        color: t.color,
+      }));
+
+      const CustomTooltip = ({ active, payload }) => {
+        if (active && payload && payload.length) {
+          const d = payload[0].payload;
+          return React.createElement('div', { style: { background: 'white', border: '1px solid #E5E7EB', borderRadius: '10px', padding: '12px 16px', boxShadow: '0 4px 20px rgba(0,0,0,0.1)', fontFamily: 'Nunito, sans-serif' } },
+            React.createElement('div', { style: { fontWeight: 800, color: '#073D3D', marginBottom: '4px' } }, d.name),
+            React.createElement('div', { style: { color: '#0D6E6E', fontWeight: 700 } }, `Accuracy: ${d.accuracy}%`),
+            React.createElement('div', { style: { color: '#9CA3AF', fontSize: '0.8rem' } }, `${d.total} questions`)
+          );
+        }
+        return null;
+      };
+
+      return React.createElement(ResponsiveContainer, { width: '100%', height: 200 },
+        React.createElement(BarChart, { data, margin: { top: 5, right: 10, left: -20, bottom: 5 } },
+          React.createElement(CartesianGrid, { strokeDasharray: '3 3', stroke: '#F3F4F6' }),
+          React.createElement(XAxis, { dataKey: 'name', tick: { fontSize: 11, fontFamily: 'Nunito', fill: '#6B7280' }, tickLine: false }),
+          React.createElement(YAxis, { domain: [0, 100], tick: { fontSize: 11, fontFamily: 'Nunito', fill: '#6B7280' }, tickLine: false, axisLine: false }),
+          React.createElement(Tooltip, { content: React.createElement(CustomTooltip) }),
+          React.createElement(Bar, { dataKey: 'accuracy', radius: [6, 6, 0, 0], maxBarSize: 60 },
+            data.map((entry, i) => React.createElement(Cell, { key: i, fill: entry.total > 0 ? entry.color : '#E5E7EB' }))
+          )
+        )
+      );
+    }
+
+    // ===== VOCAB BUILDER =====
+    function VocabBuilder({ terms }) {
+      if (!terms.length) return React.createElement('div', { style: { color: '#9CA3AF', fontSize: '0.9rem', textAlign: 'center', padding: '20px', fontStyle: 'italic' } },
+        '📖 Дасгал хийхийн хажуугаар үгийн сан нэмэгдэнэ...\nTerms will appear as you practice.'
+      );
+
+      return React.createElement('div', { className: 'vocab-scroll' },
+        React.createElement('div', { style: { display: 'flex', flexDirection: 'column', gap: '10px' } },
+          terms.map((t, i) =>
+            React.createElement('div', { key: i, className: 'vocab-card' },
+              React.createElement('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '8px', marginBottom: '6px' } },
+                React.createElement('span', { style: { fontWeight: 800, color: '#073D3D', fontSize: '0.95rem' } }, t.english),
+                React.createElement('span', { style: { fontWeight: 700, color: '#D97706', fontSize: '0.85rem', whiteSpace: 'nowrap' } }, t.mongolian)
+              ),
+              React.createElement('div', { style: { color: '#6B7280', fontSize: '0.82rem', lineHeight: 1.5, marginBottom: '4px' } }, t.definition),
+              t.example && React.createElement('div', { style: { color: '#9CA3AF', fontSize: '0.78rem', fontStyle: 'italic' } }, '💡 ', t.example)
+            )
+          )
+        )
+      );
+    }
+
+    // ===== QUESTION CARD =====
+    function QuestionCard({ question, onAnswer, answered, selectedIndex }) {
+      const letters = ['A', 'B', 'C', 'D'];
+
+      const getClass = (i) => {
+        if (!answered) return '';
+        if (i === question.correctAnswerIndex) return 'correct';
+        if (i === selectedIndex && i !== question.correctAnswerIndex) return 'incorrect';
+        return '';
+      };
+
+      return React.createElement('div', { className: 'page-enter' },
+        // Bilingual Question
+        React.createElement('div', { style: { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '24px' } },
+          React.createElement('div', { className: 'card', style: { padding: '20px', borderTop: '3px solid #0D6E6E' } },
+            React.createElement('div', { style: { fontSize: '0.7rem', fontWeight: 800, color: '#0D6E6E', letterSpacing: '0.1em', marginBottom: '8px' } }, '🇺🇸 ENGLISH'),
+            React.createElement('div', { style: { color: '#1E293B', lineHeight: 1.7, fontWeight: 600, fontSize: '0.95rem' } },
+              React.createElement(MathText, { text: question.questionEnglish })
+            )
+          ),
+          React.createElement('div', { className: 'card', style: { padding: '20px', borderTop: '3px solid #D97706' } },
+            React.createElement('div', { style: { fontSize: '0.7rem', fontWeight: 800, color: '#D97706', letterSpacing: '0.1em', marginBottom: '8px' } }, '🇲🇳 МОНГОЛ'),
+            React.createElement('div', { style: { color: '#1E293B', lineHeight: 1.7, fontWeight: 600, fontSize: '0.95rem' } },
+              React.createElement(MathText, { text: question.questionMongolian })
+            )
+          )
+        ),
+
+        // Options
+        React.createElement('div', { style: { display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '20px' } },
+          question.options.map((opt, i) =>
+            React.createElement('button', {
+              key: i,
+              className: `option-btn ${getClass(i)}`,
+              onClick: () => !answered && onAnswer(i),
+              disabled: answered,
+            },
+              React.createElement('span', { style: { fontWeight: 800, marginRight: '10px', color: '#0D6E6E', fontSize: '1rem' } }, letters[i] + '.'),
+              React.createElement(MathText, { text: opt })
+            )
+          )
+        ),
+
+        // Explanation
+        answered && React.createElement('div', { className: 'explanation-box page-enter' },
+          React.createElement('div', { style: { display: 'flex', gap: '8px', alignItems: 'center', marginBottom: '14px' } },
+            React.createElement('span', { style: { fontSize: '1.2rem' } }, selectedIndex === question.correctAnswerIndex ? '🎉' : '💡'),
+            React.createElement('span', { style: { fontWeight: 800, color: '#073D3D', fontSize: '1rem' } }, selectedIndex === question.correctAnswerIndex ? 'Correct! / Зөв!' : 'Not quite — here\'s why:')
+          ),
+          React.createElement('div', { style: { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px' } },
+            React.createElement('div', null,
+              React.createElement('div', { style: { fontSize: '0.7rem', fontWeight: 800, color: '#0D6E6E', letterSpacing: '0.08em', marginBottom: '6px' } }, '🇺🇸 EXPLANATION'),
+              React.createElement('div', { style: { color: '#374151', fontSize: '0.88rem', lineHeight: 1.7 } }, React.createElement(MathText, { text: question.explanationEnglish }))
+            ),
+            React.createElement('div', null,
+              React.createElement('div', { style: { fontSize: '0.7rem', fontWeight: 800, color: '#D97706', letterSpacing: '0.08em', marginBottom: '6px' } }, '🇲🇳 ТАЙЛБАР'),
+              React.createElement('div', { style: { color: '#374151', fontSize: '0.88rem', lineHeight: 1.7 } }, React.createElement(MathText, { text: question.explanationMongolian }))
+            )
+          )
+        )
+      );
+    }
+
+    // ===== DASHBOARD =====
+    function Dashboard() {
+      const [selectedTopic, setSelectedTopic] = useState('algebra');
+      const [difficulty, setDifficulty] = useState('easy');
+      const [streak, setStreak] = useState(0);
+      const [question, setQuestion] = useState(null);
+      const [loading, setLoading] = useState(false);
+      const [answered, setAnswered] = useState(false);
+      const [selectedIndex, setSelectedIndex] = useState(null);
+      const [stats, setStats] = useState({ attempted: 0, correct: 0 });
+      const [topicStats, setTopicStats] = useState({});
+      const [vocab, setVocab] = useState([]);
+      const [vocabOpen, setVocabOpen] = useState(false);
+      const [error, setError] = useState(null);
+
+      const topicObj = TOPICS.find(t => t.id === selectedTopic);
+
+      const estimateSATScore = () => {
+        if (stats.attempted === 0) return 200;
+        const accuracy = stats.correct / stats.attempted;
+        const diffWeight = { easy: 0.8, medium: 1.0, hard: 1.2 }[difficulty];
+        const base = 200 + Math.round(accuracy * 600 * diffWeight);
+        return Math.min(800, Math.max(200, base));
+      };
+
+      const adjustDifficulty = (correct, currentStreak) => {
+        const levels = ['easy', 'medium', 'hard'];
+        const idx = levels.indexOf(difficulty);
+        if (correct && currentStreak >= 2 && idx < 2) return levels[idx + 1];
+        if (!correct && idx > 0) return levels[idx - 1];
+        return difficulty;
+      };
+
+      const fetchQuestion = useCallback(async () => {
+        setLoading(true);
+        setError(null);
+        setAnswered(false);
+        setSelectedIndex(null);
+        setQuestion(null);
+
+        const topicName = topicObj.label;
+        const prompt = `You are an SAT Math tutor for 10th-grade Mongolian students with A1 English level. Generate one SAT Math question.
+
+Topic: ${topicName}
+Difficulty: ${difficulty} (easy = straightforward, medium = multi-step, hard = complex reasoning)
+
+Requirements:
+- Simple, clear English (A1 level) — short sentences
+- Accurate Mongolian (Cyrillic script) translation
+- Format ALL math using LaTeX: inline with $...$ and display with $$...$$
+- 4 answer choices
+- Step-by-step explanation in both languages
+- Extract 2-3 key math terms
+
+Respond ONLY with this exact JSON (no markdown, no extra text):
+{
+  "questionEnglish": "...",
+  "questionMongolian": "...",
+  "options": ["A option", "B option", "C option", "D option"],
+  "correctAnswerIndex": 0,
+  "explanationEnglish": "Step 1: ... Step 2: ... Answer: ...",
+  "explanationMongolian": "Алхам 1: ... Алхам 2: ... Хариулт: ...",
+  "keyTerms": [
+    {"english": "variable", "mongolian": "хувьсагч", "definition": "A letter that represents an unknown number", "example": "In $2x + 3 = 7$, $x$ is the variable"},
+    {"english": "coefficient", "mongolian": "коэффициент", "definition": "The number multiplied by a variable", "example": "In $3x$, the coefficient is $3$"}
+  ]
+}`;
+
+        try {
+          const response = await fetch('https://api.anthropic.com/v1/messages', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              model: 'claude-sonnet-4-20250514',
+              max_tokens: 1000,
+              messages: [{ role: 'user', content: prompt }],
+            }),
+          });
+
+          const data = await response.json();
+          const raw = data.content?.map(b => b.text || '').join('');
+          const cleaned = raw.replace(/```json|```/g, '').trim();
+          const parsed = JSON.parse(cleaned);
+          setQuestion(parsed);
+        } catch (err) {
+          setError('Could not load question. Please try again. / Асуулт ачаалж чадсангүй. Дахин оролдоно уу.');
+        } finally {
+          setLoading(false);
+        }
+      }, [selectedTopic, difficulty]);
+
+      useEffect(() => { fetchQuestion(); }, []);
+
+      const handleAnswer = (idx) => {
+        setSelectedIndex(idx);
+        setAnswered(true);
+        const correct = idx === question.correctAnswerIndex;
+        const newStreak = correct ? streak + 1 : 0;
+        setStreak(newStreak);
+
+        const newDiff = adjustDifficulty(correct, newStreak);
+        setDifficulty(newDiff);
+
+        setStats(s => ({ attempted: s.attempted + 1, correct: s.correct + (correct ? 1 : 0) }));
+        setTopicStats(ts => {
+          const cur = ts[selectedTopic] || { total: 0, correct: 0 };
+          return { ...ts, [selectedTopic]: { total: cur.total + 1, correct: cur.correct + (correct ? 1 : 0) } };
+        });
+
+        if (question.keyTerms) {
+          setVocab(v => {
+            const existing = new Set(v.map(t => t.english));
+            const newTerms = question.keyTerms.filter(t => !existing.has(t.english));
+            return [...v, ...newTerms];
+          });
+        }
+      };
+
+      const satScore = estimateSATScore();
+      const pct = Math.round(((satScore - 200) / 600) * 100);
+      const accuracy = stats.attempted > 0 ? Math.round((stats.correct / stats.attempted) * 100) : 0;
+
+      return React.createElement('div', { className: 'pattern-bg page-enter', style: { minHeight: 'calc(100vh - 60px)', padding: '24px 16px' } },
+        React.createElement('div', { className: 'max-w-6xl mx-auto' },
+
+          // Header
+          React.createElement('div', { style: { marginBottom: '24px' } },
+            React.createElement('h1', { className: 'font-display', style: { fontSize: '2rem', color: '#073D3D', marginBottom: '4px' } }, 'Practice Dashboard'),
+            React.createElement('p', { style: { color: '#6B7280', fontSize: '0.9rem' } }, 'Дасгалын самбар — хариуга зөв аваад онооо нэмэгдүүл!')
+          ),
+
+          // Main grid
+          React.createElement('div', { className: 'dashboard-grid', style: { display: 'grid', gridTemplateColumns: '280px 1fr', gap: '20px', alignItems: 'start' } },
+
+            // LEFT SIDEBAR
+            React.createElement('div', { style: { display: 'flex', flexDirection: 'column', gap: '16px' } },
+
+              // Stats
+              React.createElement('div', { className: 'card', style: { padding: '20px' } },
+                React.createElement('div', { style: { fontWeight: 800, color: '#073D3D', fontSize: '0.85rem', marginBottom: '16px', letterSpacing: '0.05em', textTransform: 'uppercase' } }, '📊 My Stats / Миний Оноо'),
+                React.createElement('div', { style: { display: 'flex', gap: '10px', marginBottom: '16px' } },
+                  React.createElement('div', { className: 'stat-card', style: { flex: 1, padding: '14px 10px' } },
+                    React.createElement('div', { style: { fontSize: '1.6rem', fontWeight: 900 } }, stats.attempted),
+                    React.createElement('div', { style: { fontSize: '0.7rem', opacity: 0.7, marginTop: '2px' } }, 'Attempted')
+                  ),
+                  React.createElement('div', { className: 'stat-card', style: { flex: 1, padding: '14px 10px', background: 'linear-gradient(135deg, #065F46, #047857)' } },
+                    React.createElement('div', { style: { fontSize: '1.6rem', fontWeight: 900 } }, stats.correct),
+                    React.createElement('div', { style: { fontSize: '0.7rem', opacity: 0.7, marginTop: '2px' } }, 'Correct')
+                  )
+                ),
+                // SAT Score estimate
+                React.createElement('div', { style: { background: 'linear-gradient(135deg, rgba(13,110,110,0.05), rgba(245,158,11,0.05))', borderRadius: '12px', padding: '16px', textAlign: 'center', border: '1px solid rgba(13,110,110,0.15)' } },
+                  React.createElement('div', { style: { fontSize: '0.7rem', fontWeight: 800, color: '#0D6E6E', letterSpacing: '0.08em', marginBottom: '8px' } }, 'ESTIMATED SAT SCORE'),
+                  React.createElement('div', { className: 'font-display', style: { fontSize: '2.8rem', color: '#073D3D', fontWeight: 900, lineHeight: 1 } }, satScore),
+                  React.createElement('div', { style: { fontSize: '0.75rem', color: '#6B7280', marginTop: '4px' } }, `${accuracy}% accuracy • ${DIFFICULTY_LABELS[difficulty]}`)
+                ),
+                streak > 0 && React.createElement('div', { style: { marginTop: '12px', textAlign: 'center' } },
+                  React.createElement('span', { className: 'streak-badge' }, `🔥 ${streak} streak!`)
+                )
+              ),
+
+              // Topic selector
+              React.createElement('div', { className: 'card', style: { padding: '20px' } },
+                React.createElement('div', { style: { fontWeight: 800, color: '#073D3D', fontSize: '0.85rem', marginBottom: '14px', letterSpacing: '0.05em', textTransform: 'uppercase' } }, '📚 Topic / Сэдэв'),
+                React.createElement('div', { style: { display: 'flex', flexDirection: 'column', gap: '8px' } },
+                  TOPICS.map(t =>
+                    React.createElement('button', {
+                      key: t.id,
+                      className: `topic-chip ${selectedTopic === t.id ? 'active' : ''}`,
+                      style: { textAlign: 'left' },
+                      onClick: () => { setSelectedTopic(t.id); }
+                    },
+                      React.createElement('span', { style: { marginRight: '6px' } }, t.icon),
+                      t.label
+                    )
+                  )
+                )
+              ),
+
+              // Performance chart
+              React.createElement('div', { className: 'card', style: { padding: '20px' } },
+                React.createElement('div', { style: { fontWeight: 800, color: '#073D3D', fontSize: '0.85rem', marginBottom: '14px', letterSpacing: '0.05em', textTransform: 'uppercase' } }, '📈 Accuracy by Topic'),
+                React.createElement(PerformanceChart, { topicStats })
+              )
+            ),
+
+            // RIGHT MAIN
+            React.createElement('div', { style: { display: 'flex', flexDirection: 'column', gap: '16px' } },
+
+              // Question controls bar
+              React.createElement('div', { className: 'card', style: { padding: '16px 20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px' } },
+                React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: '12px' } },
+                  React.createElement('span', { style: { fontWeight: 800, color: '#073D3D', fontSize: '0.9rem' } },
+                    topicObj.icon + ' ' + topicObj.label
+                  ),
+                  React.createElement('span', { className: `diff-badge diff-${difficulty}` }, DIFFICULTY_LABELS[difficulty] + ' / ' + difficulty)
+                ),
+                React.createElement('div', { style: { display: 'flex', gap: '10px' } },
+                  React.createElement('button', { className: 'btn-secondary', onClick: () => setVocabOpen(v => !v), style: { fontSize: '0.82rem', padding: '8px 14px' } },
+                    `📖 Vocab (${vocab.length})`
+                  ),
+                  React.createElement('button', { className: 'btn-primary', onClick: fetchQuestion, disabled: loading, style: { fontSize: '0.85rem', padding: '10px 20px' } },
+                    loading ? '⏳ Loading...' : (answered ? '➡️ Next Question' : '🔄 New Question')
+                  )
+                )
+              ),
+
+              // Vocab builder (collapsible)
+              vocabOpen && React.createElement('div', { className: 'card page-enter', style: { padding: '20px' } },
+                React.createElement('div', { style: { fontWeight: 800, color: '#073D3D', fontSize: '0.9rem', marginBottom: '14px' } }, '📖 Vocabulary Builder / Үгийн Сан'),
+                React.createElement(VocabBuilder, { terms: vocab })
+              ),
+
+              // Question area
+              React.createElement('div', { className: 'card', style: { padding: '24px' } },
+                loading
+                  ? React.createElement('div', { style: { padding: '60px 20px', textAlign: 'center' } },
+                    React.createElement('div', { className: 'spinner' }),
+                    React.createElement('div', { style: { color: '#0D6E6E', fontWeight: 700, marginTop: '16px' } }, 'Generating your question...'),
+                    React.createElement('div', { style: { color: '#9CA3AF', fontSize: '0.85rem', marginTop: '4px' } }, 'Асуулт бэлтгэж байна...')
+                  )
+                  : error
+                  ? React.createElement('div', { style: { padding: '40px', textAlign: 'center' } },
+                    React.createElement('div', { style: { fontSize: '2rem', marginBottom: '12px' } }, '⚠️'),
+                    React.createElement('div', { style: { color: '#DC2626', fontWeight: 700, marginBottom: '8px' } }, 'Error loading question'),
+                    React.createElement('div', { style: { color: '#6B7280', fontSize: '0.85rem', marginBottom: '20px' } }, error),
+                    React.createElement('button', { className: 'btn-primary', onClick: fetchQuestion }, 'Try Again / Дахин оролдох')
+                  )
+                  : question
+                  ? React.createElement(QuestionCard, { question, onAnswer: handleAnswer, answered, selectedIndex })
+                  : null
+              )
+            )
+          )
+        )
+      );
+    }
+
+    // ===== APP ROOT =====
+    function App() {
+      const [page, setPage] = useState('landing');
+      return React.createElement('div',null,
+        React.createElement(Navbar, { page, setPage }),
+        page === 'landing'
+          ? React.createElement(LandingPage, { setPage })
+          : React.createElement(Dashboard)
+      );
+    }
+
+    createRoot(document.getElementById('root')).render(React.createElement(App));
+  </script>
+</body>
+</html>
